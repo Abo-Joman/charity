@@ -1,86 +1,119 @@
 {#
-| Variable         | Type    | Description                     |
-|------------------|---------|---------------------------------|
-| cart             | object  |                                 |
-| cart.items_count | int     |                                 |
-| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
+| Variable         | Type    | Description                   |
+|------------------|---------|-------------------------------|
+| cart             | object  |                               |
+| cart.items_count | int     |                               |
+| cart.total       | string  | Formatted total               |
 #}
 {% set important_links = theme.settings.get('important_links') %}
-<header class="store-header">
-  {# Top Nav #}
-  <div class="top-navbar">
-    <div class="container flex justify-between">
-      <div class="flex-1 flex items-center gap-2">
-          {# Footer Menu #}
-          {% if important_links %}
+
+<header class="nexus-header" id="nexus-header">
+
+  {# ── Top Bar ─────────────────────────────────────────── #}
+  <div class="nexus-topbar">
+    <div class="container flex items-center justify-between gap-4">
+
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        {% if important_links %}
+          <nav class="nexus-topbar__links">
             <salla-menu source="footer" topnav></salla-menu>
-          {% endif %}
+          </nav>
+        {% endif %}
 
-          {# Language & Currency Component #}
-          <div class="header-buttons">
-              {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
-                  <button type="button" onclick="salla.event.dispatch('localization::open')" class="btn--rounded-gray basis-0">
-                      <span class="flag iti__flag iti__{{ user.language.country_code }} rounded-sm"></span>
-                      <span class="mx-1.5">|</span> <span>{{ currency.symbol }}</span>
-                  </button>
-                  <salla-localization-modal></salla-localization-modal>
-              {% endif %}
-          </div>
+        {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+          <button type="button"
+                  onclick="salla.event.dispatch('localization::open')"
+                  class="nexus-btn-ghost nexus-btn-ghost--sm">
+            <span class="flag iti__flag iti__{{ user.language.country_code }} rounded-sm"></span>
+            <span class="mx-1">|</span>
+            <span>{{ currency.symbol }}</span>
+          </button>
+          <salla-localization-modal></salla-localization-modal>
+        {% endif %}
 
-          {# Scopes | Branches #}
-          {% if store.scope %}
-              <button class="btn--rounded-gray"
-                      onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
-                  <i class="sicon-location rtl:ml-1 ltr:mr-1"></i> {{ store.scope.name }}
-              </button>
-          {% endif %}
-
-          {# Search bar #}
-          <div class="header-search flex-1">
-            <salla-search inline oval height="36"></salla-search>
-          </div>
+        {% if store.scope %}
+          <button class="nexus-btn-ghost nexus-btn-ghost--sm"
+                  onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
+            <i class="sicon-location ltr:mr-1 rtl:ml-1"></i>
+            {{ store.scope.name }}
+          </button>
+        {% endif %}
       </div>
 
-      <salla-contacts is-header></salla-contacts>
+      {# Search ─ inline in top bar #}
+      <div class="nexus-topbar__search">
+        <salla-search inline oval height="34"></salla-search>
+      </div>
+
+      <salla-contacts is-header class="shrink-0"></salla-contacts>
     </div>
   </div>
 
-  {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
-      <div class="inner bg-inherit w-full">
-          <div class="container">
-              <div class="flex items-stretch justify-between relative">
-                  <div class="flex items-center">
-                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                        <i class="sicon-menu text-primary text-2xl"></i>
-                      </a>
-                      <a class="navbar-brand" href="{{ store.url }}">
-                          <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo }}" alt="{{ store.name }} logo">
-                          {% if is_page('index') %}
-                            <h1 class="sr-only">{{ store.name }}</h1>
-                          {% else %}
-                            <h2 class="sr-only">{{ store.name }}</h2>
-                          {% endif %}
-                      </a>
-                      <custom-main-menu></custom-main-menu>
-                  </div>
-                  <div class="flex items-center justify-end my-2.5">
-                      {% if user.type=='user' %}
-                        <salla-user-menu avatar-only show-header></salla-user-menu>
-                      {% else %}
-                          <button class="header-btn" aria-label="user-icon" onclick="salla.event.dispatch('login::open')">
-                            <i class="header-btn__icon sicon-user-circle"></i>
-                          </button>
-                      {% endif %}
-                      <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
-                        <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
-                      </salla-cart-summary>
-                  </div>
-              </div>
+  {# ── Main Nav ─────────────────────────────────────────── #}
+  <div id="mainnav" class="nexus-mainnav">
+    <div class="inner w-full">
+      <div class="container">
+        <div class="flex items-center justify-between gap-6 py-3 lg:py-0">
+
+          {# Left: Hamburger + Logo + Menu #}
+          <div class="flex items-center gap-3 min-w-0">
+            <a class="nexus-hamburger lg:hidden" href="#mobile-menu" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </a>
+
+            <a class="nexus-brand" href="{{ store.url }}">
+              <img fetchpriority="high" width="120" height="40" loading="eager"
+                   src="{{ store.logo }}" alt="{{ store.name }}">
+              {% if is_page('index') %}
+                <h1 class="sr-only">{{ store.name }}</h1>
+              {% else %}
+                <h2 class="sr-only">{{ store.name }}</h2>
+              {% endif %}
+            </a>
+
+            <custom-main-menu class="hidden lg:flex"></custom-main-menu>
           </div>
+
+          {# Right: Actions #}
+          <div class="flex items-center gap-2 shrink-0">
+
+            {# Search icon on mobile #}
+            <button class="nexus-icon-btn lg:hidden" onclick="salla.event.dispatch('search::open')" aria-label="Search">
+              <i class="sicon-search"></i>
+            </button>
+
+            {# Wishlist #}
+            <a href="{{ link('customer.wishlist') }}" class="nexus-icon-btn" aria-label="Wishlist">
+              <i class="sicon-heart"></i>
+            </a>
+
+            {# User #}
+            {% if user.type == 'user' %}
+              <salla-user-menu avatar-only show-header class="nexus-icon-btn-wrap"></salla-user-menu>
+            {% else %}
+              <button class="nexus-icon-btn" aria-label="Login" onclick="salla.event.dispatch('login::open')">
+                <i class="sicon-user-circle"></i>
+              </button>
+            {% endif %}
+
+            {# Cart #}
+            <salla-cart-summary class="nexus-cart-btn">
+              <i slot="icon" class="sicon-shopping-bag"></i>
+            </salla-cart-summary>
+
+          </div>
+        </div>
       </div>
+    </div>
   </div>
+
 </header>
+
+{# Mobile Menu #}
+<nav id="mobile-menu" class="nexus-mobile-menu">
+  <salla-menu source="main" mobile></salla-menu>
+</nav>
+
 {% if store.scope %}
-    <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
+  <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
 {% endif %}

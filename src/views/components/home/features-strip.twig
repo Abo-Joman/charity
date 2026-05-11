@@ -1,0 +1,52 @@
+{#
+| Component: features-strip
+| Shows 4 USP icons with short text — fast shipping, warranty, original products, 24/7 support
+#}
+
+<section class="nexus-features">
+  <div class="container">
+    <div class="nexus-features__grid">
+
+      <div class="nexus-feature-card" data-animate="fade-up" data-delay="0">
+        <div class="nexus-feature-card__icon">
+          <i class="sicon-delivery-fast"></i>
+        </div>
+        <div>
+          <h3 class="nexus-feature-card__title">{{ trans('blocks.home.fast_delivery') ?? 'توصيل سريع' }}</h3>
+          <p class="nexus-feature-card__sub">{{ trans('blocks.home.fast_delivery_sub') ?? 'خلال 24-48 ساعة' }}</p>
+        </div>
+      </div>
+
+      <div class="nexus-feature-card" data-animate="fade-up" data-delay="100">
+        <div class="nexus-feature-card__icon nexus-feature-card__icon--gold">
+          <i class="sicon-shield-check"></i>
+        </div>
+        <div>
+          <h3 class="nexus-feature-card__title">{{ trans('blocks.home.warranty') ?? 'ضمان أصلي' }}</h3>
+          <p class="nexus-feature-card__sub">{{ trans('blocks.home.warranty_sub') ?? 'ضمان رسمي من الوكيل' }}</p>
+        </div>
+      </div>
+
+      <div class="nexus-feature-card" data-animate="fade-up" data-delay="200">
+        <div class="nexus-feature-card__icon nexus-feature-card__icon--purple">
+          <i class="sicon-badge-check"></i>
+        </div>
+        <div>
+          <h3 class="nexus-feature-card__title">{{ trans('blocks.home.original') ?? 'منتجات أصلية 100%' }}</h3>
+          <p class="nexus-feature-card__sub">{{ trans('blocks.home.original_sub') ?? 'موثقة ومعتمدة' }}</p>
+        </div>
+      </div>
+
+      <div class="nexus-feature-card" data-animate="fade-up" data-delay="300">
+        <div class="nexus-feature-card__icon">
+          <i class="sicon-headphone"></i>
+        </div>
+        <div>
+          <h3 class="nexus-feature-card__title">{{ trans('blocks.home.support') ?? 'دعم 24/7' }}</h3>
+          <p class="nexus-feature-card__sub">{{ trans('blocks.home.support_sub') ?? 'فريق متخصص دائماً' }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
