@@ -1,49 +1,148 @@
+// ════════════════════════════════════════════════════════
+//  NEXUS — Footer
+// ════════════════════════════════════════════════════════
 
-.store-footer {
-  @apply relative bg-darker text-white mt-8 sm:mt-16;
+.nexus-footer {
+  position: relative;
+  margin-top: 80px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
 
-  a{
-    @apply transition-opacity hover:opacity-75;
+  a {
+    transition: color 0.2s ease;
+    &:hover { color: var(--color-primary); }
   }
 
-  &__inner{
-    @apply bg-dark py-8 lg:py-16 border-b border-dashed border-b-white/10;
-  }  
-
-  h3{
-    @apply text-lg font-bold mb-3 lg:mb-5;
+  // ── Glow line at top ─────────────────────────────────
+  &__glow {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 1px;
+    background: var(--gradient-primary);
+    opacity: 0.4;
+    filter: blur(1px);
   }
 
-  .social-link {
-    @apply border rounded-full w-8 h-8 justify-center flex items-center hover:opacity-75 transition duration-300 text-sm
+  // ── Main body ─────────────────────────────────────────
+  &__body {
+    padding: 64px 0 48px;
+
+    @media (max-width: 768px) { padding: 40px 0 32px; }
   }
 
-  .contact-social{
-    @apply mt-5 pt-5 border-t border-white/10;
+  // ── Brand ─────────────────────────────────────────────
+  &__brand {
+    display: inline-flex;
+    margin-bottom: 16px;
 
-    ul {
-      @apply mb-0;
-    }
+    img { max-height: 36px; width: auto; object-fit: contain; }
   }
 
-  .footer-is-light & {
-    @apply bg-gray-50 text-gray-700;
+  &__tagline {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    max-width: 300px;
+  }
 
-    .store-footer__inner {
-      @apply bg-gray-100 border-b-gray-200;
-    }
+  // ── Social ────────────────────────────────────────────
+  &__social {
+    margin-bottom: 24px;
 
     .social-link {
-      @apply border-gray-300;
-    }
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-muted);
+      transition: all 0.2s ease;
 
-    .contact-social{
-      @apply border-gray-100;
+      &:hover {
+        color: var(--color-primary);
+        border-color: rgba(0,212,255,0.3);
+        background: var(--color-primary-glow);
+      }
     }
+  }
+
+  // ── VAT ───────────────────────────────────────────────
+  &__vat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  &__vat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  &__vat-number {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  // ── Heading ───────────────────────────────────────────
+  &__heading {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  // ── Menu ──────────────────────────────────────────────
+  &__menu {
+    salla-menu ul { @apply space-y-2; }
+
+    li a {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+
+      &:hover { color: var(--color-primary); }
+    }
+  }
+
+  // ── Contacts ──────────────────────────────────────────
+  &__contacts {
+    --contacts-color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  // ── Apps ──────────────────────────────────────────────
+  &__apps {
+    display: block;
+  }
+
+  // ── Bottom bar ────────────────────────────────────────
+  &__bottom {
+    border-top: 1px solid var(--border-subtle);
+    padding: 16px 0;
+  }
+
+  &__copy {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+
+    p { color: inherit; }
+  }
+
+  &__payments {
+    opacity: 0.6;
+    filter: brightness(0.7) invert(0.3);
   }
 }
 
-
-.copyright-text p{
-  @apply text-gray-700;
+// Keep old class working for Salla injected hooks
+.store-footer {
+  @extend .nexus-footer;
 }
+
+.copyright-text p { color: var(--text-muted); }

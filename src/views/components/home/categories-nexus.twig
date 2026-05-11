@@ -1,0 +1,53 @@
+{#
+| Component: categories-nexus
+| Fields:
+|   title       string (multilanguage)
+|   categories  items (dropdown-list, source: categories, multichoice)
+#}
+
+<section class="nexus-section" data-animate-section>
+  <div class="container">
+
+    <div class="nexus-section-head" data-animate="fade-up">
+      <div>
+        <div class="nexus-badge">{{ trans('blocks.home.categories') ?? 'التصنيفات' }}</div>
+        <h2 class="nexus-section-title">
+          {{ component.fields.title ?? trans('blocks.home.browse_categories') ?? 'تصفح حسب الفئة' }}
+        </h2>
+      </div>
+      <a href="{{ link('products') }}" class="nexus-link-arrow">
+        {{ trans('common.elements.see_all') }}
+        <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} ltr:rotate-180"></i>
+      </a>
+    </div>
+
+    <div class="nexus-categories__grid">
+      {% for cat in component.fields.categories %}
+        <a href="{{ cat.url }}" class="nexus-cat-card" data-animate="fade-up" data-delay="{{ loop.index0 * 80 }}">
+          <div class="nexus-cat-card__img-wrap">
+            {% if cat.image %}
+              <img src="{{ cat.image }}" alt="{{ cat.name }}" loading="lazy"
+                   class="nexus-cat-card__img">
+            {% else %}
+              <div class="nexus-cat-card__img-placeholder">
+                <i class="sicon-layers"></i>
+              </div>
+            {% endif %}
+            <div class="nexus-cat-card__overlay"></div>
+          </div>
+          <div class="nexus-cat-card__body">
+            <h3 class="nexus-cat-card__name">{{ cat.name }}</h3>
+            <span class="nexus-cat-card__count">
+              {{ cat.products_count ?? '' }}
+              {% if cat.products_count %}{{ trans('blocks.home.products') ?? 'منتج' }}{% endif %}
+            </span>
+          </div>
+          <div class="nexus-cat-card__arrow">
+            <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} ltr:rotate-180"></i>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

@@ -1,29 +1,76 @@
+// NEXUS — Luxury Tech Theme
+// Color System
 
-// Colors
 $main-color: var(--color-primary);
-$infinte-color: var(--infinte-color);
-$main-text-color: var(--main-text-color);
 
 :root {
-  --infinte-color: #c9c9c9;
-  --main-text-color: #231f1e;
-  --main-text-color-dark: #2b2d34;
+  // ── Core Dark Palette ──────────────────────────────────────────
+  --bg-base:          #09090F;   // page background
+  --bg-surface:       #0F0F1A;   // cards, panels
+  --bg-surface-2:     #14141F;   // elevated surfaces
+  --bg-surface-3:     #1A1A2E;   // borders, dividers
 
-  /* current */
-  --color-primary: #5cd5c4;
-  --color-primary: #414042;
-  --color-primary-d: #272628;
-  --color-primary-l: #676668;
-  --color-primary-reverse: #ff6767;
-  --color-text: #7c8082;
-  --bg-gray: #c6c7ce1a;
-  --color-grey: #f5f7f9;
-  --color-light-grey: #eeeeee;
-  /* font-size */
-  --font-sm: 0.8685714286rem;
-  /* font-family: ; */
-  --font-main: "DINNextLTArabic";
+  --border-subtle:    rgba(255, 255, 255, 0.06);
+  --border-default:   rgba(255, 255, 255, 0.10);
+  --border-strong:    rgba(255, 255, 255, 0.18);
 
-  /* plugins */
+  // ── Accent Colors ──────────────────────────────────────────────
+  --color-primary:    #00D4FF;   // electric blue
+  --color-primary-dark:  #0098B8;
+  --color-primary-light: #66E5FF;
+  --color-primary-glow:  rgba(0, 212, 255, 0.15);
+  --color-primary-glow-strong: rgba(0, 212, 255, 0.30);
+
+  --color-gold:       #FFD166;   // warm gold — premium feel
+  --color-gold-dark:  #C9A23D;
+  --color-gold-glow:  rgba(255, 209, 102, 0.15);
+
+  --color-purple:     #7B61FF;   // violet accent
+  --color-purple-glow: rgba(123, 97, 255, 0.15);
+
+  // ── Text ───────────────────────────────────────────────────────
+  --text-primary:     #FFFFFF;
+  --text-secondary:   #A0AABB;
+  --text-muted:       #5A6476;
+  --main-text-color:  #FFFFFF;
+  --main-text-color-dark: #A0AABB;
+
+  // ── Legacy vars (keeps Salla components happy) ─────────────────
+  --infinte-color:    #1A1A2E;
+  --color-text:       #A0AABB;
+  --bg-gray:          rgba(255, 255, 255, 0.04);
+  --color-grey:       #0F0F1A;
+  --color-light-grey: #1A1A2E;
+
+  // ── Gradients ──────────────────────────────────────────────────
+  --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #7B61FF 100%);
+  --gradient-gold:    linear-gradient(135deg, #FFD166 0%, #FF9A3C 100%);
+  --gradient-dark:    linear-gradient(180deg, #0F0F1A 0%, #09090F 100%);
+  --gradient-card:    linear-gradient(145deg, #14141F 0%, #0F0F1A 100%);
+
+  // ── Glow Shadows ───────────────────────────────────────────────
+  --shadow-blue:  0 0 30px rgba(0, 212, 255, 0.20), 0 0 60px rgba(0, 212, 255, 0.08);
+  --shadow-gold:  0 0 30px rgba(255, 209, 102, 0.20), 0 0 60px rgba(255, 209, 102, 0.08);
+  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.40), 0 1px 0 rgba(255,255,255,0.06) inset;
+  --shadow-header: 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.50);
+
+  // ── Radii ──────────────────────────────────────────────────────
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+
+  // ── Spacing ────────────────────────────────────────────────────
+  --section-py:  80px;
+
+  // ── Typography ─────────────────────────────────────────────────
+  --font-sm:     0.875rem;
+  --font-main:   "DINNextLTArabic", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  // ── Transitions ────────────────────────────────────────────────
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  // ── MMenu ──────────────────────────────────────────────────────
   --mm-ocd-width: calc(100% - 51px);
 }

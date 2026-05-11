@@ -1,0 +1,124 @@
+{#
+| Component: hero-nexus
+| Fields:
+|   eyebrow       string  — small label above heading
+|   heading        string  — main headline (multilanguage)
+|   subheading     string  — supporting text (multilanguage)
+|   cta_label      string  — button text (multilanguage)
+|   cta_url        items   — destination link
+|   badge_label    string  — floating badge text e.g. "4K Ultra HD"
+|   badge_value    string  — highlighted number e.g. "120Hz"
+|   product_image  string  — hero product image URL
+|   bg_image       string  — optional background image
+#}
+
+<section class="nexus-hero" id="nexus-hero">
+
+  {# Background layers #}
+  <div class="nexus-hero__bg" aria-hidden="true">
+    {% if component.fields.bg_image %}
+      <img src="{{ component.fields.bg_image }}" alt="" class="nexus-hero__bg-img" loading="eager">
+    {% endif %}
+    <div class="nexus-hero__bg-grid"></div>
+    <div class="nexus-hero__bg-glow nexus-hero__bg-glow--blue"></div>
+    <div class="nexus-hero__bg-glow nexus-hero__bg-glow--purple"></div>
+  </div>
+
+  <div class="container relative z-10">
+    <div class="nexus-hero__inner">
+
+      {# ── Text side ────────────────────────────── #}
+      <div class="nexus-hero__content" data-animate="fade-up">
+
+        {% if component.fields.eyebrow %}
+          <div class="nexus-hero__eyebrow">
+            <span class="nexus-hero__eyebrow-dot"></span>
+            {{ component.fields.eyebrow }}
+          </div>
+        {% endif %}
+
+        <h1 class="nexus-hero__heading">
+          {{ component.fields.heading ?? store.name }}
+        </h1>
+
+        {% if component.fields.subheading %}
+          <p class="nexus-hero__sub">{{ component.fields.subheading }}</p>
+        {% endif %}
+
+        <div class="nexus-hero__actions">
+          {% if component.fields.cta_url %}
+            <a href="{{ component.fields.cta_url }}" class="nexus-btn-primary">
+              <span>{{ component.fields.cta_label ?? trans('common.elements.shop_now') }}</span>
+              <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} ltr:rotate-180"></i>
+            </a>
+          {% endif %}
+          <a href="{{ link('products') }}" class="nexus-btn-outline">
+            {{ trans('common.elements.see_all') }}
+          </a>
+        </div>
+
+        {# Stats strip #}
+        <div class="nexus-hero__stats">
+          <div class="nexus-hero__stat">
+            <span class="nexus-hero__stat-num">+5K</span>
+            <span class="nexus-hero__stat-label">{{ trans('blocks.home.products') ?? 'منتج' }}</span>
+          </div>
+          <div class="nexus-hero__stat-divider"></div>
+          <div class="nexus-hero__stat">
+            <span class="nexus-hero__stat-num">98%</span>
+            <span class="nexus-hero__stat-label">{{ trans('blocks.home.satisfaction') ?? 'رضا العملاء' }}</span>
+          </div>
+          <div class="nexus-hero__stat-divider"></div>
+          <div class="nexus-hero__stat">
+            <span class="nexus-hero__stat-num">24/7</span>
+            <span class="nexus-hero__stat-label">{{ trans('blocks.home.support') ?? 'دعم فني' }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      {# ── Product visual side ───────────────────── #}
+      <div class="nexus-hero__visual" data-animate="fade-in">
+
+        {# Glow ring #}
+        <div class="nexus-hero__ring" aria-hidden="true"></div>
+
+        {# Product image #}
+        <div class="nexus-hero__product-wrap">
+          {% if component.fields.product_image %}
+            <img src="{{ component.fields.product_image }}"
+                 alt="{{ component.fields.heading }}"
+                 class="nexus-hero__product-img"
+                 loading="eager" fetchpriority="high">
+          {% else %}
+            {# Fallback placeholder #}
+            <div class="nexus-hero__product-placeholder">
+              <i class="sicon-laptop text-8xl opacity-20"></i>
+            </div>
+          {% endif %}
+        </div>
+
+        {# Floating badges #}
+        {% if component.fields.badge_label %}
+          <div class="nexus-hero__badge nexus-hero__badge--top">
+            <i class="sicon-star text-gold"></i>
+            <span>{{ component.fields.badge_label }}</span>
+          </div>
+        {% endif %}
+
+        {% if component.fields.badge_value %}
+          <div class="nexus-hero__badge nexus-hero__badge--bottom">
+            <span class="nexus-hero__badge-num">{{ component.fields.badge_value }}</span>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+  {# Scroll indicator #}
+  <div class="nexus-hero__scroll" aria-hidden="true">
+    <div class="nexus-hero__scroll-line"></div>
+  </div>
+
+</section>
