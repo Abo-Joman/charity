@@ -1,0 +1,636 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Beneficiary Management Platform — Component Styles
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Variables ──────────────────────────────────────────────────────────────
+
+$status-pending:    #f59e0b;
+$status-processing: #3b82f6;
+$status-approved:   #10b981;
+$status-rejected:   #ef4444;
+$status-suspended:  #6b7280;
+
+// ── Hero ───────────────────────────────────────────────────────────────────
+
+.beneficiary-hero {
+  @apply relative overflow-hidden py-16 text-center;
+
+  &__badge {
+    @apply inline-block px-4 py-1 rounded-full text-sm font-semibold mb-4;
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-primary-reverse, #fff);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  &__title {
+    @apply text-3xl md:text-4xl font-bold mb-3;
+    color: var(--color-primary-reverse, #fff);
+  }
+
+  &__subtitle {
+    @apply text-lg opacity-80 max-w-xl mx-auto;
+    color: var(--color-primary-reverse, #fff);
+  }
+}
+
+// ── Multi-step Progress ────────────────────────────────────────────────────
+
+.beneficiary-steps {
+  @apply mb-8;
+
+  &__track {
+    @apply flex items-center justify-between;
+  }
+
+  &__item {
+    @apply flex flex-col items-center gap-2 relative flex-1;
+
+    &.is-active .beneficiary-steps__circle {
+      background: var(--color-primary);
+      color: #fff;
+      @apply shadow-md scale-110;
+    }
+
+    &.is-done .beneficiary-steps__circle {
+      @apply bg-green-500 text-white;
+    }
+  }
+
+  &__circle {
+    @apply w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold;
+    @apply bg-gray-100 text-gray-400 transition-all duration-300;
+    z-index: 1;
+  }
+
+  &__label {
+    @apply text-xs text-gray-500 text-center hidden sm:block;
+  }
+
+  &__line {
+    @apply flex-1 h-px bg-gray-200 -mx-2;
+    margin-top: -18px;
+  }
+}
+
+// ── Form Card ──────────────────────────────────────────────────────────────
+
+.beneficiary-form {
+  &__step {
+    @apply hidden;
+
+    &.is-active {
+      @apply block animate-[fadeUp_0.3s_ease_forwards];
+    }
+  }
+
+  &__card {
+    @apply bg-white rounded-xl shadow-sm overflow-hidden mb-4;
+  }
+
+  &__card-header {
+    @apply flex items-center gap-3 px-6 py-4 border-b border-gray-100;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #0099bb) 100%);
+
+    i {
+      @apply text-2xl;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    h2 {
+      @apply text-base font-bold;
+      color: #fff;
+    }
+  }
+
+  &__card-body {
+    @apply p-6;
+  }
+
+  &__actions {
+    @apply flex items-center justify-between gap-3 mt-2;
+  }
+}
+
+.form-group {
+  @apply flex flex-col gap-1.5;
+}
+
+.form-label {
+  @apply block text-sm font-semibold text-gray-700;
+}
+
+// ── Aid Type Checkboxes / Radios ───────────────────────────────────────────
+
+.beneficiary-aid-types {
+  @apply grid grid-cols-2 sm:grid-cols-3 gap-3;
+}
+
+.beneficiary-aid-type {
+  @apply cursor-pointer;
+
+  input {
+    @apply sr-only;
+  }
+
+  &__card {
+    @apply flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-200;
+    @apply text-gray-500 transition-all duration-200 hover:border-primary hover:text-primary;
+
+    i {
+      @apply text-2xl;
+    }
+
+    span {
+      @apply text-sm font-medium;
+    }
+  }
+
+  &.is-selected &__card,
+  input:checked + &__card {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+}
+
+// ── Urgency Options ────────────────────────────────────────────────────────
+
+.beneficiary-urgency-options {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.beneficiary-urgency-option {
+  @apply cursor-pointer;
+
+  input {
+    @apply sr-only;
+  }
+
+  &__card {
+    @apply flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 border-gray-200;
+    @apply text-gray-500 transition-all duration-200;
+
+    i { @apply text-xl; }
+    span { @apply text-xs font-semibold; }
+
+    &--low    { &:hover { @apply border-green-400 text-green-600; } }
+    &--medium { &:hover { @apply border-yellow-400 text-yellow-600; } }
+    &--high   { &:hover { @apply border-red-400 text-red-600; } }
+  }
+
+  &.is-selected &__card--low,
+  input:checked + &__card--low {
+    @apply border-green-400 text-green-600 bg-green-50;
+  }
+
+  &.is-selected &__card--medium,
+  input:checked + &__card--medium {
+    @apply border-yellow-400 text-yellow-600 bg-yellow-50;
+  }
+
+  &.is-selected &__card--high,
+  input:checked + &__card--high {
+    @apply border-red-400 text-red-600 bg-red-50;
+  }
+}
+
+// ── Status Badges ──────────────────────────────────────────────────────────
+
+.beneficiary-badge {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+
+  &--pending {
+    background: color-mix(in srgb, #{$status-pending} 15%, transparent);
+    color: darken($status-pending, 10%);
+  }
+
+  &--processing {
+    background: color-mix(in srgb, #{$status-processing} 12%, transparent);
+    color: darken($status-processing, 10%);
+  }
+
+  &--approved {
+    background: color-mix(in srgb, #{$status-approved} 12%, transparent);
+    color: darken($status-approved, 10%);
+  }
+
+  &--rejected {
+    background: color-mix(in srgb, #{$status-rejected} 12%, transparent);
+    color: darken($status-rejected, 10%);
+  }
+
+  &--not-registered,
+  &--suspended {
+    background: color-mix(in srgb, #{$status-suspended} 12%, transparent);
+    color: darken($status-suspended, 10%);
+  }
+}
+
+// ── Registration Status Banner ─────────────────────────────────────────────
+
+.beneficiary-status-banner {
+  @apply flex items-center gap-4 p-5 rounded-xl;
+
+  &--pending         { @apply bg-yellow-50 border border-yellow-200; }
+  &--approved        { @apply bg-green-50 border border-green-200; }
+  &--rejected        { @apply bg-red-50 border border-red-200; }
+  &--suspended       { @apply bg-gray-100 border border-gray-200; }
+  &--not-registered  { @apply bg-blue-50 border border-blue-200; }
+
+  &__icon {
+    @apply w-12 h-12 rounded-full flex items-center justify-center text-xl shrink-0;
+
+    .beneficiary-status-banner--pending &         { @apply bg-yellow-100 text-yellow-600; }
+    .beneficiary-status-banner--approved &        { @apply bg-green-100 text-green-600; }
+    .beneficiary-status-banner--rejected &        { @apply bg-red-100 text-red-600; }
+    .beneficiary-status-banner--suspended &       { @apply bg-gray-200 text-gray-600; }
+    .beneficiary-status-banner--not-registered &  { @apply bg-blue-100 text-blue-600; }
+  }
+
+  &__content {
+    @apply flex-1;
+
+    h3 {
+      @apply font-bold text-sm mb-0.5;
+    }
+
+    p {
+      @apply text-sm text-gray-600;
+    }
+  }
+}
+
+.beneficiary-case-number {
+  @apply inline-block mt-2 text-xs bg-white/60 px-3 py-1 rounded-full border border-current/20;
+}
+
+// ── Dashboard Stats ────────────────────────────────────────────────────────
+
+.beneficiary-stats {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
+}
+
+.beneficiary-stat-card {
+  @apply bg-white rounded-xl p-5 flex items-center gap-4 shadow-sm;
+
+  &__icon {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0;
+  }
+
+  &__content {
+    @apply flex flex-col;
+  }
+
+  &__value {
+    @apply text-2xl font-bold text-gray-800;
+  }
+
+  &__label {
+    @apply text-xs text-gray-500;
+  }
+
+  &--total    &__icon { @apply bg-blue-100 text-blue-600; }
+  &--approved &__icon { @apply bg-green-100 text-green-600; }
+  &--pending  &__icon { @apply bg-yellow-100 text-yellow-600; }
+}
+
+// ── Quick Actions ──────────────────────────────────────────────────────────
+
+.section-title {
+  @apply font-bold text-base text-gray-800;
+}
+
+.beneficiary-quick-actions {
+  &__grid {
+    @apply grid grid-cols-3 gap-3 mt-3;
+  }
+}
+
+.beneficiary-quick-action {
+  @apply flex flex-col items-center gap-2 p-4 bg-white rounded-xl text-center;
+  @apply hover:shadow-md transition-shadow duration-200 cursor-pointer;
+
+  span {
+    @apply text-xs font-medium text-gray-600;
+  }
+
+  &__icon {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center text-xl;
+
+    &--primary { @apply bg-blue-100 text-blue-600; }
+    &--blue    { @apply bg-sky-100 text-sky-600; }
+    &--purple  { @apply bg-purple-100 text-purple-600; }
+  }
+}
+
+// ── Request Cards (list) ───────────────────────────────────────────────────
+
+.beneficiary-request-card {
+  @apply flex items-center gap-3 bg-white rounded-xl p-4 hover:shadow-sm transition-shadow duration-200;
+
+  &__icon {
+    @apply w-10 h-10 rounded-full flex items-center justify-center text-base shrink-0;
+  }
+
+  &__info {
+    @apply flex-1 min-w-0 flex flex-col;
+  }
+
+  &__title {
+    @apply text-sm font-semibold text-gray-800 truncate;
+  }
+
+  &__date {
+    @apply text-xs text-gray-400;
+  }
+
+  &__status {
+    @apply shrink-0;
+  }
+
+  &__arrow {
+    @apply text-gray-300 hover:text-primary shrink-0 transition-colors;
+  }
+}
+
+// ── Request List Items ─────────────────────────────────────────────────────
+
+.beneficiary-filter-tabs {
+  @apply flex gap-2 overflow-x-auto pb-1 mb-5;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.beneficiary-filter-tab {
+  @apply flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium;
+  @apply bg-gray-100 text-gray-500 whitespace-nowrap transition-all duration-200;
+
+  &__count {
+    @apply bg-gray-200 text-gray-600 rounded-full px-2 py-0.5 text-xs;
+  }
+
+  &.is-active {
+    background: var(--color-primary);
+    @apply text-white;
+
+    .beneficiary-filter-tab__count {
+      @apply bg-white/20 text-white;
+    }
+  }
+}
+
+.beneficiary-request-item {
+  @apply bg-white rounded-xl overflow-hidden shadow-sm;
+
+  &__header {
+    @apply flex items-start justify-between gap-3 p-4 pb-3;
+  }
+
+  &__category {
+    @apply flex items-center gap-3;
+  }
+
+  &__title {
+    @apply font-semibold text-sm text-gray-800;
+  }
+
+  &__ref {
+    @apply text-xs text-gray-400;
+  }
+
+  &__body {
+    @apply px-4 pb-3;
+  }
+
+  &__description {
+    @apply text-sm text-gray-500 leading-relaxed mb-2;
+  }
+
+  &__meta {
+    @apply flex items-center gap-4 text-xs text-gray-400;
+
+    i { @apply text-xs; }
+  }
+
+  &__date,
+  &__urgency {
+    @apply flex items-center gap-1;
+  }
+
+  &__footer {
+    @apply border-t border-gray-50 px-4 py-3;
+  }
+
+  &__view-btn {
+    @apply flex items-center gap-1.5 text-primary text-sm font-medium hover:opacity-80 transition-opacity;
+  }
+}
+
+// ── Category Icons ─────────────────────────────────────────────────────────
+
+.beneficiary-category-icon {
+  @apply inline-flex items-center justify-center rounded-xl w-10 h-10 text-base;
+
+  &--food        { @apply bg-orange-100 text-orange-600; }
+  &--medical     { @apply bg-red-100 text-red-600; }
+  &--educational { @apply bg-blue-100 text-blue-600; }
+  &--financial   { @apply bg-green-100 text-green-600; }
+  &--housing     { @apply bg-indigo-100 text-indigo-600; }
+  &--clothing    { @apply bg-purple-100 text-purple-600; }
+  &--other       { @apply bg-gray-100 text-gray-600; }
+}
+
+// ── Urgency Labels ─────────────────────────────────────────────────────────
+
+.beneficiary-urgency {
+  &--low    { @apply text-green-600; }
+  &--medium { @apply text-yellow-600; }
+  &--high   { @apply text-red-600; }
+}
+
+// ── Single Request View ────────────────────────────────────────────────────
+
+.beneficiary-info-item {
+  @apply flex flex-col gap-0.5;
+
+  &__label {
+    @apply text-xs text-gray-400;
+  }
+
+  &__value {
+    @apply text-sm font-semibold text-gray-700;
+  }
+}
+
+.beneficiary-admin-note {
+  @apply bg-blue-50 border border-blue-200 rounded-xl p-5;
+
+  &__header {
+    @apply flex items-center gap-2 font-semibold text-blue-700 mb-2;
+
+    i { @apply text-lg; }
+  }
+
+  p {
+    @apply text-sm text-blue-900 leading-relaxed;
+  }
+}
+
+// ── Status Timeline ────────────────────────────────────────────────────────
+
+.beneficiary-timeline {
+  @apply relative;
+
+  &::before {
+    content: '';
+    @apply absolute top-0 bottom-0 w-px bg-gray-200;
+    inset-inline-start: 18px;
+  }
+
+  &__item {
+    @apply flex gap-4 pb-6 relative;
+
+    &:last-child {
+      @apply pb-0;
+    }
+  }
+
+  &__dot {
+    @apply w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0 z-10;
+
+    &--pending    { @apply bg-yellow-100 text-yellow-600 ring-4 ring-yellow-50; }
+    &--processing { @apply bg-blue-100 text-blue-600 ring-4 ring-blue-50; }
+    &--approved   { @apply bg-green-100 text-green-600 ring-4 ring-green-50; }
+    &--rejected   { @apply bg-red-100 text-red-600 ring-4 ring-red-50; }
+  }
+
+  &__content {
+    @apply flex-1 pt-1;
+  }
+
+  &__header {
+    @apply flex items-center justify-between;
+  }
+
+  .is-current &__dot {
+    @apply ring-4 scale-110;
+    box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 20%, transparent);
+  }
+}
+
+// ── Attachments Grid ───────────────────────────────────────────────────────
+
+.beneficiary-attachment {
+  @apply block rounded-xl overflow-hidden border border-gray-200 hover:border-primary transition-colors;
+
+  &__file {
+    @apply flex flex-col items-center justify-center p-4 h-24 bg-gray-50;
+  }
+}
+
+// ── Consent Checkbox ───────────────────────────────────────────────────────
+
+.beneficiary-consent {
+  @apply p-4 bg-gray-50 rounded-xl border border-gray-200;
+
+  input[type="checkbox"] {
+    @apply w-4 h-4 shrink-0;
+    accent-color: var(--color-primary);
+  }
+}
+
+// ── Home Impact Section ────────────────────────────────────────────────────
+
+.beneficiary-impact-section {
+  @apply py-16 bg-white;
+}
+
+.beneficiary-impact {
+  &__eyebrow {
+    @apply inline-block text-sm font-semibold mb-3 px-4 py-1.5 rounded-full;
+    color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+
+  &__title {
+    @apply text-2xl md:text-3xl font-bold text-gray-800;
+  }
+
+  &__stats {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-6;
+  }
+
+  &__stat {
+    @apply flex flex-col items-center text-center gap-3;
+  }
+
+  &__stat-icon {
+    @apply w-16 h-16 rounded-2xl flex items-center justify-center text-2xl;
+
+    &--blue   { @apply bg-blue-100 text-blue-600; }
+    &--green  { @apply bg-green-100 text-green-600; }
+    &--gold   { @apply bg-amber-100 text-amber-600; }
+    &--purple { @apply bg-purple-100 text-purple-600; }
+  }
+
+  &__stat-number {
+    @apply text-4xl font-black text-gray-800;
+  }
+
+  &__stat-label {
+    @apply text-sm text-gray-500;
+  }
+}
+
+// ── Button Helpers ─────────────────────────────────────────────────────────
+
+.btn {
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 cursor-pointer;
+
+  &--primary {
+    background: var(--color-primary);
+    color: var(--color-primary-reverse, #fff);
+
+    &:hover { opacity: 0.88; }
+  }
+
+  &--outline {
+    @apply bg-white border border-gray-200 text-gray-700 hover:border-primary hover:text-primary;
+  }
+
+  &--sm  { @apply px-4 py-2 text-xs; }
+  &--lg  { @apply px-8 py-3.5 text-base; }
+
+  &--submit-registration {
+    @apply flex-1 sm:flex-none;
+  }
+}
+
+// ── Responsive ─────────────────────────────────────────────────────────────
+
+@media (max-width: 640px) {
+  .beneficiary-form__actions {
+    @apply flex-col;
+
+    .btn, salla-button {
+      @apply w-full text-center justify-center;
+    }
+  }
+
+  .beneficiary-quick-actions__grid {
+    @apply grid-cols-3 gap-2;
+  }
+
+  .beneficiary-quick-action {
+    @apply p-3;
+
+    &__icon { @apply w-10 h-10 text-base; }
+
+    span { @apply text-[10px]; }
+  }
+
+  .beneficiary-impact__stats {
+    @apply grid-cols-2 gap-4;
+  }
+}

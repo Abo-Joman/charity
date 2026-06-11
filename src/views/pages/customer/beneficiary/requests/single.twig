@@ -1,0 +1,202 @@
+{#
+| Variable                       | Type     | Description                                      |
+|--------------------------------|----------|--------------------------------------------------|
+| page                           | object   |                                                  |
+| page.title                     | string   |                                                  |
+| page.slug                      | string   | customer.beneficiary.requests.single             |
+| aid_request                    | object   |                                                  |
+| aid_request.id                 | int      |                                                  |
+| aid_request.reference          | string   |                                                  |
+| aid_request.title              | string   |                                                  |
+| aid_request.category           | string   | food|medical|educational|financial|housing|clothing |
+| aid_request.category_label     | string   |                                                  |
+| aid_request.status             | string   | pending|processing|approved|rejected             |
+| aid_request.status_label       | string   |                                                  |
+| aid_request.urgency            | string   | low|medium|high                                  |
+| aid_request.description        | string   |                                                  |
+| aid_request.admin_notes        | string   |                                                  |
+| aid_request.created_at         | date     |                                                  |
+| aid_request.updated_at         | date     |                                                  |
+| aid_request.attachments        | array    |                                                  |
+| aid_request.timeline           | array    | status history                                   |
+| aid_request.timeline[].status  | string   |                                                  |
+| aid_request.timeline[].label   | string   |                                                  |
+| aid_request.timeline[].date    | date     |                                                  |
+| aid_request.timeline[].note    | string   |                                                  |
+#}
+{% extends "layouts.customer" %}
+
+{% block inner_title %}
+<div class="flex items-center justify-between mb-2">
+    <div>
+        <h1 class="font-bold text-lg">{{ page.title }}</h1>
+        {% if aid_request is defined %}
+        <span class="text-gray-400 text-sm">
+            {{ trans('pages.beneficiary.reference') }}: #{{ aid_request.reference ?? aid_request.id }}
+        </span>
+        {% endif %}
+    </div>
+    {% if aid_request is defined %}
+    <span class="beneficiary-badge beneficiary-badge--{{ aid_request.status ?? 'pending' }} text-sm px-3 py-1">
+        {{ aid_request.status_label ?? trans('pages.beneficiary.status_' ~ (aid_request.status ?? 'pending')) }}
+    </span>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block inner_content %}
+{% if aid_request is defined %}
+<div class="beneficiary-request-single space-y-5">
+
+    {# Request Info Card #}
+    <div class="bg-white rounded-md p-5">
+        <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+            <span class="beneficiary-category-icon beneficiary-category-icon--{{ aid_request.category ?? 'other' }} w-12 h-12 text-xl">
+                <i class="{{ aid_request.category_icon ?? 'sicon-file-text' }}"></i>
+            </span>
+            <div>
+                <h2 class="font-bold text-base">{{ aid_request.title }}</h2>
+                <span class="text-sm text-gray-400">{{ aid_request.category_label ?? trans('pages.beneficiary.aid_' ~ (aid_request.category ?? 'other')) }}</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+            <div class="beneficiary-info-item">
+                <span class="beneficiary-info-item__label">{{ trans('pages.beneficiary.request_date') }}</span>
+                <span class="beneficiary-info-item__value">{{ aid_request.created_at|date ?? '' }}</span>
+            </div>
+            <div class="beneficiary-info-item">
+                <span class="beneficiary-info-item__label">{{ trans('pages.beneficiary.last_update') }}</span>
+                <span class="beneficiary-info-item__value">{{ aid_request.updated_at|date ?? '' }}</span>
+            </div>
+            <div class="beneficiary-info-item">
+                <span class="beneficiary-info-item__label">{{ trans('pages.beneficiary.urgency_level') }}</span>
+                <span class="beneficiary-info-item__value beneficiary-urgency--{{ aid_request.urgency ?? 'low' }}">
+                    {{ trans('pages.beneficiary.urgency_' ~ (aid_request.urgency ?? 'low')) }}
+                </span>
+            </div>
+        </div>
+
+        {% if aid_request.description %}
+        <div class="mt-4">
+            <h3 class="text-sm font-semibold text-gray-500 mb-2">{{ trans('pages.beneficiary.request_description') }}</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">{{ aid_request.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    {# Admin Response / Notes #}
+    {% if aid_request.admin_notes is defined and aid_request.admin_notes %}
+    <div class="beneficiary-admin-note">
+        <div class="beneficiary-admin-note__header">
+            <i class="sicon-message-circle"></i>
+            <span>{{ trans('pages.beneficiary.admin_response') }}</span>
+        </div>
+        <p>{{ aid_request.admin_notes }}</p>
+    </div>
+    {% endif %}
+
+    {# Status Timeline #}
+    {% if aid_request.timeline is defined and aid_request.timeline|length %}
+    <div class="bg-white rounded-md p-5">
+        <h2 class="font-semibold text-base mb-5">{{ trans('pages.beneficiary.request_timeline') }}</h2>
+        <div class="beneficiary-timeline">
+            {% for event in aid_request.timeline %}
+                <div class="beneficiary-timeline__item {% if loop.first %}is-current{% endif %}">
+                    <div class="beneficiary-timeline__dot beneficiary-timeline__dot--{{ event.status ?? 'pending' }}">
+                        {% if event.status == 'approved' %}
+                            <i class="sicon-check"></i>
+                        {% elseif event.status == 'rejected' %}
+                            <i class="sicon-cancel"></i>
+                        {% elseif event.status == 'processing' %}
+                            <i class="sicon-refresh"></i>
+                        {% else %}
+                            <i class="sicon-clock"></i>
+                        {% endif %}
+                    </div>
+                    <div class="beneficiary-timeline__content">
+                        <div class="beneficiary-timeline__header">
+                            <span class="font-semibold text-sm">{{ event.label ?? trans('pages.beneficiary.status_' ~ (event.status ?? 'pending')) }}</span>
+                            <span class="text-xs text-gray-400">{{ event.date|date ?? '' }}</span>
+                        </div>
+                        {% if event.note is defined and event.note %}
+                            <p class="text-sm text-gray-500 mt-1">{{ event.note }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {# Attachments #}
+    {% if aid_request.attachments is defined and aid_request.attachments|length %}
+    <div class="bg-white rounded-md p-5">
+        <h2 class="font-semibold text-base mb-4">{{ trans('pages.beneficiary.attachments') }}</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {% for attachment in aid_request.attachments %}
+                <a href="{{ attachment.url }}" target="_blank"
+                   class="beneficiary-attachment">
+                    {% if attachment.type == 'image' %}
+                        <img src="{{ attachment.url }}" alt="{{ trans('pages.beneficiary.attachment') }}"
+                             class="w-full h-24 object-cover rounded-md">
+                    {% else %}
+                        <div class="beneficiary-attachment__file">
+                            <i class="sicon-file-text text-2xl text-primary"></i>
+                            <span class="text-xs text-gray-500 truncate mt-1">{{ attachment.name ?? trans('pages.beneficiary.document') }}</span>
+                        </div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {# Actions #}
+    <div class="flex items-center gap-3">
+        <a href="/customer/beneficiary/requests" class="btn btn--outline">
+            <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} rtl:ml-1.5 ltr:mr-1.5"></i>
+            {{ trans('pages.beneficiary.back_to_requests') }}
+        </a>
+        {% if (aid_request.status ?? '') == 'pending' %}
+        <salla-button color="danger" fill="outline" size="small"
+                      onclick="document.querySelector('#cancel-request-modal').open()">
+            <i class="sicon-cancel rtl:ml-1.5 ltr:mr-1.5"></i>
+            {{ trans('pages.beneficiary.cancel_request') }}
+        </salla-button>
+        {% endif %}
+    </div>
+
+    {# Cancel Modal #}
+    {% if (aid_request.status ?? '') == 'pending' %}
+    <salla-modal width="sm" id="cancel-request-modal"
+                 modal-title="{{ trans('pages.beneficiary.cancel_request') }}"
+                 icon="sicon-cancel" icon-style="error"
+                 sub-title="{{ trans('pages.beneficiary.cancel_request_confirm') }}">
+        <div slot="footer" class="grid grid-cols-2 gap-3">
+            <salla-button id="confirm-cancel-request" color="danger" width="wide">
+                {{ trans('common.elements.ok') }}
+            </salla-button>
+            <salla-button fill="outline" color="light"
+                          onclick="document.querySelector('#cancel-request-modal').close()">
+                {{ trans('common.elements.cancel') }}
+            </salla-button>
+        </div>
+    </salla-modal>
+    {% endif %}
+
+</div>
+{% else %}
+    <div class="no-content-placeholder">
+        <i class="sicon-search icon"></i>
+        <p>{{ trans('pages.beneficiary.request_not_found') }}</p>
+        <a href="/customer/beneficiary/requests" class="btn btn--primary btn--sm mt-4">
+            {{ trans('pages.beneficiary.back_to_requests') }}
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'beneficiary.js' | asset }}"></script>
+{% endblock %}

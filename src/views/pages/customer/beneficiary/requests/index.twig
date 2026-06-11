@@ -1,0 +1,128 @@
+{#
+| Variable               | Type     | Description                          |
+|------------------------|----------|--------------------------------------|
+| page                   | object   |                                      |
+| page.title             | string   |                                      |
+| page.slug              | string   | customer.beneficiary.requests        |
+| aid_requests           | array    | collection of aid requests           |
+| aid_requests[].id      | int      |                                      |
+| aid_requests[].title   | string   |                                      |
+| aid_requests[].category| string   | food|medical|educational|financial…  |
+| aid_requests[].status  | string   | pending|processing|approved|rejected |
+| aid_requests[].created_at | date  |                                      |
+| aid_requests[].reference  | string |                                      |
+#}
+{% extends "layouts.customer" %}
+
+{% block inner_title %}
+<div class="flex items-center justify-between mb-2">
+    <h1 class="font-bold text-lg">{{ page.title }}</h1>
+    <a href="/customer/beneficiary/requests/create" class="btn btn--primary btn--sm">
+        <i class="sicon-plus rtl:ml-1.5 ltr:mr-1.5"></i>
+        {{ trans('pages.beneficiary.new_request') }}
+    </a>
+</div>
+{% endblock %}
+
+{% block inner_content %}
+<div class="beneficiary-requests-page">
+
+    {# Status Filter Tabs #}
+    <div class="beneficiary-filter-tabs" id="status-filters">
+        <button class="beneficiary-filter-tab is-active" data-filter="all">
+            {{ trans('pages.beneficiary.filter_all') }}
+            {% if aid_requests is defined %}
+                <span class="beneficiary-filter-tab__count">{{ aid_requests|length }}</span>
+            {% endif %}
+        </button>
+        <button class="beneficiary-filter-tab" data-filter="pending">
+            {{ trans('pages.beneficiary.filter_pending') }}
+        </button>
+        <button class="beneficiary-filter-tab" data-filter="processing">
+            {{ trans('pages.beneficiary.filter_processing') }}
+        </button>
+        <button class="beneficiary-filter-tab" data-filter="approved">
+            {{ trans('pages.beneficiary.filter_approved') }}
+        </button>
+        <button class="beneficiary-filter-tab" data-filter="rejected">
+            {{ trans('pages.beneficiary.filter_rejected') }}
+        </button>
+    </div>
+
+    {# Requests List #}
+    {% if aid_requests is defined and aid_requests|length %}
+        <div class="space-y-4" id="requests-list">
+            {% for request in aid_requests %}
+                <div class="beneficiary-request-item" data-status="{{ request.status ?? 'pending' }}">
+                    <div class="beneficiary-request-item__header">
+                        <div class="beneficiary-request-item__category">
+                            <span class="beneficiary-category-icon beneficiary-category-icon--{{ request.category ?? 'other' }}">
+                                <i class="{{ request.category_icon ?? 'sicon-file-text' }}"></i>
+                            </span>
+                            <div>
+                                <h3 class="beneficiary-request-item__title">
+                                    {{ request.title ?? trans('pages.beneficiary.aid_request') }}
+                                </h3>
+                                <span class="beneficiary-request-item__ref">
+                                    {{ trans('pages.beneficiary.reference') }}: #{{ request.reference ?? request.id }}
+                                </span>
+                            </div>
+                        </div>
+                        <span class="beneficiary-badge beneficiary-badge--{{ request.status ?? 'pending' }}">
+                            {% if (request.status ?? 'pending') == 'approved' %}
+                                <i class="sicon-check"></i>
+                            {% elseif (request.status ?? 'pending') == 'rejected' %}
+                                <i class="sicon-cancel"></i>
+                            {% elseif (request.status ?? 'pending') == 'processing' %}
+                                <i class="sicon-refresh"></i>
+                            {% else %}
+                                <i class="sicon-clock"></i>
+                            {% endif %}
+                            {{ request.status_label ?? trans('pages.beneficiary.status_' ~ (request.status ?? 'pending')) }}
+                        </span>
+                    </div>
+
+                    <div class="beneficiary-request-item__body">
+                        {% if request.description is defined %}
+                            <p class="beneficiary-request-item__description">{{ request.description|slice(0, 120) }}{% if request.description|length > 120 %}...{% endif %}</p>
+                        {% endif %}
+                        <div class="beneficiary-request-item__meta">
+                            <span class="beneficiary-request-item__date">
+                                <i class="sicon-calendar"></i>
+                                {{ request.created_at|date ?? '' }}
+                            </span>
+                            {% if request.urgency is defined %}
+                            <span class="beneficiary-request-item__urgency beneficiary-urgency--{{ request.urgency }}">
+                                <i class="sicon-warning"></i>
+                                {{ trans('pages.beneficiary.urgency_' ~ request.urgency) }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="beneficiary-request-item__footer">
+                        <a href="/customer/beneficiary/requests/{{ request.id }}"
+                           class="beneficiary-request-item__view-btn">
+                            {{ trans('pages.beneficiary.view_details') }}
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }}"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-content-placeholder">
+            <i class="sicon-file-text icon"></i>
+            <p>{{ trans('pages.beneficiary.no_requests_yet') }}</p>
+            <a href="/customer/beneficiary/requests/create" class="btn btn--primary btn--sm mt-4">
+                {{ trans('pages.beneficiary.submit_first_request') }}
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'beneficiary.js' | asset }}"></script>
+{% endblock %}

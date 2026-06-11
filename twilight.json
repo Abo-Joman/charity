@@ -507,6 +507,98 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "beneficiary-impact-001",
+            "title": "إحصائيات أثر المستفيدين",
+            "icon": "sicon-users",
+            "path": "home.beneficiary-impact",
+            "image": null,
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "subtitle",
+                    "label": "النص الصغير فوق العنوان",
+                    "format": "text",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "value": null,
+                    "required": false,
+                    "placeholder": "مثال: أثرنا يتحدث"
+                },
+                {
+                    "type": "string",
+                    "id": "title",
+                    "label": "عنوان القسم",
+                    "format": "text",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "value": null,
+                    "required": false,
+                    "placeholder": "مثال: أثرنا على المجتمع"
+                },
+                {
+                    "type": "number",
+                    "id": "beneficiaries_count",
+                    "label": "عدد المستفيدين",
+                    "format": "integer",
+                    "icon": "sicon-users",
+                    "value": 0,
+                    "required": false,
+                    "minimum": 0
+                },
+                {
+                    "type": "number",
+                    "id": "requests_count",
+                    "label": "عدد الطلبات المُنجزة",
+                    "format": "integer",
+                    "icon": "sicon-check-circle",
+                    "value": 0,
+                    "required": false,
+                    "minimum": 0
+                },
+                {
+                    "type": "number",
+                    "id": "families_count",
+                    "label": "عدد الأسر المدعومة",
+                    "format": "integer",
+                    "icon": "sicon-heart",
+                    "value": 0,
+                    "required": false,
+                    "minimum": 0
+                },
+                {
+                    "type": "number",
+                    "id": "volunteers_count",
+                    "label": "عدد المتطوعين",
+                    "format": "integer",
+                    "icon": "sicon-volunteer",
+                    "value": 0,
+                    "required": false,
+                    "minimum": 0
+                },
+                {
+                    "type": "string",
+                    "id": "cta_label",
+                    "label": "نص زر الدعوة (اختياري)",
+                    "format": "text",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "value": null,
+                    "required": false,
+                    "placeholder": "مثال: سجّل الآن كمستفيد"
+                },
+                {
+                    "type": "string",
+                    "id": "cta_url",
+                    "label": "رابط زر الدعوة",
+                    "format": "text",
+                    "icon": "sicon-link",
+                    "value": "/beneficiary-register",
+                    "required": false
+                }
+            ]
         }
     ],
     "support_url": null,
