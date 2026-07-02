@@ -1,0 +1,5 @@
+allowBuilds:
+  '@parcel/watcher': true
+  bufferutil: true
+  es5-ext: false
+  utf-8-validate: true
