@@ -10,8 +10,7 @@
 {% block inner_content %}
 <div class="beneficiary-create-request">
 
-    <form id="aid-request-form" class="beneficiary-form"
-          onsubmit="return salla.form.onSubmit('beneficiary.request.create', event)">
+    <form id="aid-request-form" class="beneficiary-form">
 
         {# Aid Category Selection #}
         <div class="beneficiary-form__card mb-5">
@@ -140,7 +139,7 @@
                     instant-upload
                     allow-multiple
                     name="attachments[]"
-                    url="{{ store.url }}/upload-image"
+                    url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
                     payload-name="image"
                     height="140px"
                     accepted-file-types="image/png,image/jpeg,application/pdf"

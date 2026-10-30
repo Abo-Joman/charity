@@ -59,8 +59,7 @@
             </div>
 
             {# Registration Form #}
-            <form id="beneficiary-registration-form" class="beneficiary-form"
-                  onsubmit="return salla.form.onSubmit('beneficiary.register', event)">
+            <form id="beneficiary-registration-form" class="beneficiary-form">
 
                 {# Step 1: Personal Information #}
                 <div class="beneficiary-form__step is-active" data-step="1">
@@ -120,7 +119,22 @@
 
                                 <div class="form-group">
                                     <label class="form-label">{{ trans('pages.beneficiary.city') }} <span class="text-red-500">*</span></label>
-                                    <salla-region-picker name="city" required></salla-region-picker>
+                                    <select name="city" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.select_placeholder') }}</option>
+                                        <option value="riyadh">الرياض</option>
+                                        <option value="jeddah">جدة</option>
+                                        <option value="mecca">مكة المكرمة</option>
+                                        <option value="medina">المدينة المنورة</option>
+                                        <option value="dammam">الدمام</option>
+                                        <option value="khobar">الخبر</option>
+                                        <option value="taif">الطائف</option>
+                                        <option value="tabuk">تبوك</option>
+                                        <option value="abha">أبها</option>
+                                        <option value="najran">نجران</option>
+                                        <option value="jazan">جازان</option>
+                                        <option value="hail">حائل</option>
+                                        <option value="other">{{ trans('common.elements.other') }}</option>
+                                    </select>
                                 </div>
 
                             </div>
@@ -297,8 +311,9 @@
                                     <label class="form-label">{{ trans('pages.beneficiary.national_id_doc') }} <span class="text-red-500">*</span></label>
                                     <salla-file-upload
                                         instant-upload
+                                        required
                                         name="documents[national_id]"
-                                        url="{{ store.url }}/upload-image"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
                                         payload-name="image"
                                         height="120px"
                                         accepted-file-types="image/png,image/jpeg,application/pdf"
@@ -315,7 +330,7 @@
                                     <salla-file-upload
                                         instant-upload
                                         name="documents[family_doc]"
-                                        url="{{ store.url }}/upload-image"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
                                         payload-name="image"
                                         height="120px"
                                         accepted-file-types="image/png,image/jpeg,application/pdf"
@@ -333,7 +348,7 @@
                                         instant-upload
                                         allow-multiple
                                         name="documents[other][]"
-                                        url="{{ store.url }}/upload-image"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
                                         payload-name="image"
                                         height="120px"
                                         accepted-file-types="image/png,image/jpeg,application/pdf"

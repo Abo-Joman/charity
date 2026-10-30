@@ -12,15 +12,55 @@ class Beneficiary extends BasePage {
   }
 
   registerEvents() {
-    salla.form.event.onSuccess('beneficiary.register', (response) => {
-      salla.notify.success(salla.lang.get('pages.beneficiary.registration_success'));
-      setTimeout(() => window.location.href = '/customer/beneficiary/dashboard', 1500);
-    });
+    const registrationForm = document.querySelector('#beneficiary-registration-form');
+    if (registrationForm) {
+      registrationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const submitBtn = registrationForm.querySelector('salla-button[type="submit"]');
+        if (submitBtn) submitBtn.setAttribute('loading', 'true');
+        fetch('/api/beneficiary/register', {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: new FormData(registrationForm),
+        })
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              salla.notify.success(salla.lang.get('pages.beneficiary.registration_success'));
+              setTimeout(() => { window.location.href = '/customer/beneficiary/dashboard'; }, 1500);
+            } else {
+              salla.notify.error(data.message || salla.lang.get('pages.beneficiary.registration_error'));
+            }
+          })
+          .catch(() => salla.notify.error(salla.lang.get('pages.beneficiary.registration_error')))
+          .finally(() => { if (submitBtn) submitBtn.removeAttribute('loading'); });
+      });
+    }
 
-    salla.form.event.onSuccess('beneficiary.request.create', (response) => {
-      salla.notify.success(salla.lang.get('pages.beneficiary.request_submitted'));
-      setTimeout(() => window.location.href = '/customer/beneficiary/requests', 1500);
-    });
+    const requestForm = document.querySelector('#aid-request-form');
+    if (requestForm) {
+      requestForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const submitBtn = requestForm.querySelector('salla-button[type="submit"]');
+        if (submitBtn) submitBtn.setAttribute('loading', 'true');
+        fetch('/api/beneficiary/requests', {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: new FormData(requestForm),
+        })
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              salla.notify.success(salla.lang.get('pages.beneficiary.request_submitted'));
+              setTimeout(() => { window.location.href = '/customer/beneficiary/requests'; }, 1500);
+            } else {
+              salla.notify.error(data.message || salla.lang.get('pages.beneficiary.request_error'));
+            }
+          })
+          .catch(() => salla.notify.error(salla.lang.get('pages.beneficiary.request_error')))
+          .finally(() => { if (submitBtn) submitBtn.removeAttribute('loading'); });
+      });
+    }
   }
 
   // ──────────────────────────────────────────
@@ -69,7 +109,12 @@ class Beneficiary extends BasePage {
 
     required.forEach(field => {
       field.classList.remove('is-invalid');
-      if (!field.value.trim()) {
+      const tag = field.tagName.toLowerCase();
+      // salla-tel-input exposes .phone, not .value
+      const value = tag === 'salla-tel-input'
+        ? (field.phone || '')
+        : (field.value || '');
+      if (!value.toString().trim()) {
         field.classList.add('is-invalid');
         valid = false;
       }
@@ -174,7 +219,7 @@ class Beneficiary extends BasePage {
       const requestId = window.location.pathname.split('/').pop();
       confirmBtn.setAttribute('loading', 'true');
 
-      salla.api.request('DELETE', `/api/beneficiary/requests/${requestId}`)
+      salla.api.request(`/api/beneficiary/requests/${requestId}`, {}, 'DELETE')
         .then(() => {
           salla.notify.success(salla.lang.get('pages.beneficiary.request_cancelled'));
           setTimeout(() => window.location.href = '/customer/beneficiary/requests', 1200);
