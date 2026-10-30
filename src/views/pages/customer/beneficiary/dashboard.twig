@@ -1,0 +1,181 @@
+{#
+| Variable                            | Type     | Description                            |
+|-------------------------------------|----------|----------------------------------------|
+| page                                | object   |                                        |
+| page.title                          | string   |                                        |
+| page.slug                           | string   | customer.beneficiary.dashboard         |
+| beneficiary                         | object   | beneficiary profile                    |
+| beneficiary.status                  | string   | pending|approved|rejected|suspended    |
+| beneficiary.status_label            | string   |                                        |
+| beneficiary.registered_at          | date     |                                        |
+| beneficiary.case_number             | string   |                                        |
+| beneficiary.aid_types               | array    |                                        |
+| beneficiary.requests_count          | int      |                                        |
+| beneficiary.approved_requests_count | int      |                                        |
+| beneficiary.pending_requests_count  | int      |                                        |
+| recent_requests                     | array    |                                        |
+#}
+{% extends "layouts.customer" %}
+
+{% block inner_content %}
+<div class="beneficiary-dashboard">
+
+    {# Registration Status Banner #}
+    {% if beneficiary is defined %}
+        <div class="beneficiary-status-banner beneficiary-status-banner--{{ beneficiary.status ?? 'pending' }} mb-6">
+            <div class="beneficiary-status-banner__icon">
+                {% if (beneficiary.status ?? 'pending') == 'approved' %}
+                    <i class="sicon-check-circle"></i>
+                {% elseif (beneficiary.status ?? 'pending') == 'rejected' %}
+                    <i class="sicon-cancel-circle"></i>
+                {% elseif (beneficiary.status ?? 'pending') == 'suspended' %}
+                    <i class="sicon-warning"></i>
+                {% else %}
+                    <i class="sicon-clock"></i>
+                {% endif %}
+            </div>
+            <div class="beneficiary-status-banner__content">
+                <h3>{{ trans('pages.beneficiary.registration_status') }}</h3>
+                <p>{{ beneficiary.status_label ?? trans('pages.beneficiary.status_pending') }}</p>
+                {% if beneficiary.case_number is defined %}
+                    <span class="beneficiary-case-number">
+                        {{ trans('pages.beneficiary.case_number') }}: <strong>{{ beneficiary.case_number }}</strong>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        {# Not yet registered #}
+        <div class="beneficiary-status-banner beneficiary-status-banner--not-registered mb-6">
+            <div class="beneficiary-status-banner__icon">
+                <i class="sicon-user-plus"></i>
+            </div>
+            <div class="beneficiary-status-banner__content">
+                <h3>{{ trans('pages.beneficiary.not_registered_title') }}</h3>
+                <p>{{ trans('pages.beneficiary.not_registered_desc') }}</p>
+                <a href="/beneficiary-register" class="btn btn--primary btn--sm mt-3">
+                    {{ trans('pages.beneficiary.register_now') }}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    {# Stats Cards #}
+    {% if beneficiary is defined and (beneficiary.status ?? '') == 'approved' %}
+    <div class="beneficiary-stats mb-8">
+        <div class="beneficiary-stat-card beneficiary-stat-card--total">
+            <div class="beneficiary-stat-card__icon">
+                <i class="sicon-file-text"></i>
+            </div>
+            <div class="beneficiary-stat-card__content">
+                <span class="beneficiary-stat-card__value counter" data-target="{{ beneficiary.requests_count ?? 0 }}">
+                    {{ beneficiary.requests_count ?? 0 }}
+                </span>
+                <span class="beneficiary-stat-card__label">{{ trans('pages.beneficiary.total_requests') }}</span>
+            </div>
+        </div>
+
+        <div class="beneficiary-stat-card beneficiary-stat-card--approved">
+            <div class="beneficiary-stat-card__icon">
+                <i class="sicon-check-circle"></i>
+            </div>
+            <div class="beneficiary-stat-card__content">
+                <span class="beneficiary-stat-card__value counter" data-target="{{ beneficiary.approved_requests_count ?? 0 }}">
+                    {{ beneficiary.approved_requests_count ?? 0 }}
+                </span>
+                <span class="beneficiary-stat-card__label">{{ trans('pages.beneficiary.approved_requests') }}</span>
+            </div>
+        </div>
+
+        <div class="beneficiary-stat-card beneficiary-stat-card--pending">
+            <div class="beneficiary-stat-card__icon">
+                <i class="sicon-clock"></i>
+            </div>
+            <div class="beneficiary-stat-card__content">
+                <span class="beneficiary-stat-card__value counter" data-target="{{ beneficiary.pending_requests_count ?? 0 }}">
+                    {{ beneficiary.pending_requests_count ?? 0 }}
+                </span>
+                <span class="beneficiary-stat-card__label">{{ trans('pages.beneficiary.pending_requests') }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# Quick Actions #}
+    {% if beneficiary is defined and (beneficiary.status ?? '') == 'approved' %}
+    <div class="beneficiary-quick-actions mb-8">
+        <h2 class="section-title">{{ trans('pages.beneficiary.quick_actions') }}</h2>
+        <div class="beneficiary-quick-actions__grid">
+            <a href="/customer/beneficiary/requests/create" class="beneficiary-quick-action">
+                <div class="beneficiary-quick-action__icon beneficiary-quick-action__icon--primary">
+                    <i class="sicon-plus-circle"></i>
+                </div>
+                <span>{{ trans('pages.beneficiary.new_request') }}</span>
+            </a>
+            <a href="/customer/beneficiary/requests" class="beneficiary-quick-action">
+                <div class="beneficiary-quick-action__icon beneficiary-quick-action__icon--blue">
+                    <i class="sicon-list"></i>
+                </div>
+                <span>{{ trans('pages.beneficiary.my_requests') }}</span>
+            </a>
+            <a href="/customer/profile" class="beneficiary-quick-action">
+                <div class="beneficiary-quick-action__icon beneficiary-quick-action__icon--purple">
+                    <i class="sicon-user-settings"></i>
+                </div>
+                <span>{{ trans('pages.beneficiary.update_profile') }}</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {# Recent Requests #}
+    {% if recent_requests is defined and recent_requests|length %}
+    <div class="beneficiary-recent-requests">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="section-title mb-0">{{ trans('pages.beneficiary.recent_requests') }}</h2>
+            <a href="/customer/beneficiary/requests" class="text-primary text-sm hover:opacity-80">
+                {{ trans('pages.beneficiary.view_all') }}
+                <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }} text-xs"></i>
+            </a>
+        </div>
+
+        <div class="space-y-3">
+            {% for request in recent_requests %}
+                <div class="beneficiary-request-card">
+                    <div class="beneficiary-request-card__icon beneficiary-request-card__icon--{{ request.category ?? 'other' }}">
+                        <i class="{{ request.category_icon ?? 'sicon-file-text' }}"></i>
+                    </div>
+                    <div class="beneficiary-request-card__info">
+                        <span class="beneficiary-request-card__title">{{ request.title ?? trans('pages.beneficiary.aid_request') }}</span>
+                        <span class="beneficiary-request-card__date">{{ request.created_at|date ?? '' }}</span>
+                    </div>
+                    <div class="beneficiary-request-card__status">
+                        <span class="beneficiary-badge beneficiary-badge--{{ request.status ?? 'pending' }}">
+                            {{ request.status_label ?? trans('pages.beneficiary.status_pending') }}
+                        </span>
+                    </div>
+                    <a href="/customer/beneficiary/requests/{{ request.id ?? '#' }}" class="beneficiary-request-card__arrow">
+                        <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }}"></i>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        {% if beneficiary is defined and (beneficiary.status ?? '') == 'approved' %}
+        <div class="no-content-placeholder">
+            <i class="sicon-file-text icon"></i>
+            <p>{{ trans('pages.beneficiary.no_requests_yet') }}</p>
+            <a href="/customer/beneficiary/requests/create" class="btn btn--primary btn--sm mt-4">
+                {{ trans('pages.beneficiary.submit_first_request') }}
+            </a>
+        </div>
+        {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'beneficiary.js' | asset }}"></script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{#
+Component: beneficiary-impact
+Usage: {% component 'home.beneficiary-impact' %}
+
+| Field             | Type   | Description                              |
+|-------------------|--------|------------------------------------------|
+| title             | string | Section heading                          |
+| subtitle          | string | Section subheading                       |
+| beneficiaries_count | int  | Total beneficiaries served               |
+| requests_count    | int    | Total requests fulfilled                 |
+| volunteers_count  | int    | Total volunteers                         |
+| families_count    | int    | Total families helped                    |
+| cta_label         | string | Call-to-action button label              |
+| cta_url           | string | Call-to-action button URL                |
+#}
+{% set comp = component %}
+<section class="beneficiary-impact-section">
+    <div class="container">
+
+        {# Section Header #}
+        <div class="section-header text-center mb-12">
+            {% if comp.subtitle is defined and comp.subtitle %}
+                <span class="beneficiary-impact__eyebrow">{{ comp.subtitle }}</span>
+            {% endif %}
+            <h2 class="beneficiary-impact__title">
+                {{ comp.title ?? trans('pages.beneficiary.impact_title') }}
+            </h2>
+        </div>
+
+        {# Stats Grid #}
+        <div class="beneficiary-impact__stats">
+
+            <div class="beneficiary-impact__stat animate-on-scroll" data-animation="fadeUp">
+                <div class="beneficiary-impact__stat-icon beneficiary-impact__stat-icon--blue">
+                    <i class="sicon-users"></i>
+                </div>
+                <div class="beneficiary-impact__stat-number counter" data-target="{{ comp.beneficiaries_count ?? 0 }}">
+                    {{ comp.beneficiaries_count ?? 0 }}
+                </div>
+                <div class="beneficiary-impact__stat-label">
+                    {{ trans('pages.beneficiary.stat_beneficiaries') }}
+                </div>
+            </div>
+
+            <div class="beneficiary-impact__stat animate-on-scroll" data-animation="fadeUp" style="animation-delay:0.1s">
+                <div class="beneficiary-impact__stat-icon beneficiary-impact__stat-icon--green">
+                    <i class="sicon-check-circle"></i>
+                </div>
+                <div class="beneficiary-impact__stat-number counter" data-target="{{ comp.requests_count ?? 0 }}">
+                    {{ comp.requests_count ?? 0 }}
+                </div>
+                <div class="beneficiary-impact__stat-label">
+                    {{ trans('pages.beneficiary.stat_requests') }}
+                </div>
+            </div>
+
+            <div class="beneficiary-impact__stat animate-on-scroll" data-animation="fadeUp" style="animation-delay:0.2s">
+                <div class="beneficiary-impact__stat-icon beneficiary-impact__stat-icon--gold">
+                    <i class="sicon-heart"></i>
+                </div>
+                <div class="beneficiary-impact__stat-number counter" data-target="{{ comp.families_count ?? 0 }}">
+                    {{ comp.families_count ?? 0 }}
+                </div>
+                <div class="beneficiary-impact__stat-label">
+                    {{ trans('pages.beneficiary.stat_families') }}
+                </div>
+            </div>
+
+            <div class="beneficiary-impact__stat animate-on-scroll" data-animation="fadeUp" style="animation-delay:0.3s">
+                <div class="beneficiary-impact__stat-icon beneficiary-impact__stat-icon--purple">
+                    <i class="sicon-volunteer"></i>
+                </div>
+                <div class="beneficiary-impact__stat-number counter" data-target="{{ comp.volunteers_count ?? 0 }}">
+                    {{ comp.volunteers_count ?? 0 }}
+                </div>
+                <div class="beneficiary-impact__stat-label">
+                    {{ trans('pages.beneficiary.stat_volunteers') }}
+                </div>
+            </div>
+
+        </div>
+
+        {# CTA #}
+        {% if comp.cta_label is defined and comp.cta_label %}
+        <div class="text-center mt-10">
+            <a href="{{ comp.cta_url ?? '/beneficiary-register' }}"
+               class="btn btn--primary btn--lg">
+                {{ comp.cta_label }}
+                <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }} rtl:mr-2 ltr:ml-2"></i>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>

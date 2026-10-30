@@ -18,7 +18,8 @@ module.exports = {
         pages   : [asset('js/loyalty.js'), asset('js/brands.js'),],
         product : [asset('js/product.js'), asset('js/products.js')],
         order   : asset('js/order.js'),
-        testimonials   : asset('js/testimonials.js')
+        testimonials   : asset('js/testimonials.js'),
+        beneficiary: asset('js/beneficiary.js')
     },
     output : {
         path: public(),

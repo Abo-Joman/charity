@@ -1,0 +1,399 @@
+{#
+| Variable    | Type   | Description                     |
+|-------------|--------|---------------------------------|
+| page        | object |                                 |
+| page.title  | string |                                 |
+| page.slug   | string | beneficiary-register            |
+#}
+{% extends "layouts.master" %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<div class="beneficiary-register-page">
+
+    {# Page Hero #}
+    <div class="beneficiary-hero gradient-bg">
+        <div class="container py-16 text-center">
+            <span class="beneficiary-hero__badge">{{ trans('pages.beneficiary.register_badge') }}</span>
+            <h1 class="beneficiary-hero__title">{{ trans('pages.beneficiary.register_title') }}</h1>
+            <p class="beneficiary-hero__subtitle">{{ trans('pages.beneficiary.register_subtitle') }}</p>
+        </div>
+    </div>
+
+    <div class="container py-12">
+        <div class="max-w-3xl mx-auto">
+
+            {# Steps Progress #}
+            <div class="beneficiary-steps" id="registration-steps">
+                <div class="beneficiary-steps__track">
+                    <div class="beneficiary-steps__item is-active" data-step="1">
+                        <div class="beneficiary-steps__circle">
+                            <i class="sicon-user"></i>
+                        </div>
+                        <span class="beneficiary-steps__label">{{ trans('pages.beneficiary.step_personal') }}</span>
+                    </div>
+                    <div class="beneficiary-steps__line"></div>
+                    <div class="beneficiary-steps__item" data-step="2">
+                        <div class="beneficiary-steps__circle">
+                            <i class="sicon-house"></i>
+                        </div>
+                        <span class="beneficiary-steps__label">{{ trans('pages.beneficiary.step_family') }}</span>
+                    </div>
+                    <div class="beneficiary-steps__line"></div>
+                    <div class="beneficiary-steps__item" data-step="3">
+                        <div class="beneficiary-steps__circle">
+                            <i class="sicon-hand-holding-heart"></i>
+                        </div>
+                        <span class="beneficiary-steps__label">{{ trans('pages.beneficiary.step_needs') }}</span>
+                    </div>
+                    <div class="beneficiary-steps__line"></div>
+                    <div class="beneficiary-steps__item" data-step="4">
+                        <div class="beneficiary-steps__circle">
+                            <i class="sicon-file-text"></i>
+                        </div>
+                        <span class="beneficiary-steps__label">{{ trans('pages.beneficiary.step_documents') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {# Registration Form #}
+            <form id="beneficiary-registration-form" class="beneficiary-form">
+
+                {# Step 1: Personal Information #}
+                <div class="beneficiary-form__step is-active" data-step="1">
+                    <div class="beneficiary-form__card">
+                        <div class="beneficiary-form__card-header">
+                            <i class="sicon-user"></i>
+                            <h2>{{ trans('pages.beneficiary.step_personal') }}</h2>
+                        </div>
+                        <div class="beneficiary-form__card-body">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.first_name') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" name="first_name" class="form-input" required
+                                           placeholder="{{ trans('pages.beneficiary.first_name_placeholder') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.last_name') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" name="last_name" class="form-input" required
+                                           placeholder="{{ trans('pages.beneficiary.last_name_placeholder') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.national_id') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" name="national_id" id="national-id" class="form-input" required
+                                           pattern="[0-9]{10}" maxlength="10"
+                                           placeholder="{{ trans('pages.beneficiary.national_id_placeholder') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.birth_date') }} <span class="text-red-500">*</span></label>
+                                    <salla-datetime-picker dateFormat="Y-m-d" name="birth_date" required
+                                        placeholder="{{ trans('pages.beneficiary.birth_date_placeholder') }}">
+                                    </salla-datetime-picker>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.gender') }} <span class="text-red-500">*</span></label>
+                                    <select name="gender" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.gender_placeholder') }}</option>
+                                        <option value="male">{{ trans('pages.beneficiary.male') }}</option>
+                                        <option value="female">{{ trans('pages.beneficiary.female') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.mobile') }} <span class="text-red-500">*</span></label>
+                                    <salla-tel-input name="mobile" required></salla-tel-input>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.email') }}</label>
+                                    <input type="email" name="email" class="form-input"
+                                           placeholder="{{ trans('pages.beneficiary.email_placeholder') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.city') }} <span class="text-red-500">*</span></label>
+                                    <select name="city" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.select_placeholder') }}</option>
+                                        <option value="riyadh">الرياض</option>
+                                        <option value="jeddah">جدة</option>
+                                        <option value="mecca">مكة المكرمة</option>
+                                        <option value="medina">المدينة المنورة</option>
+                                        <option value="dammam">الدمام</option>
+                                        <option value="khobar">الخبر</option>
+                                        <option value="taif">الطائف</option>
+                                        <option value="tabuk">تبوك</option>
+                                        <option value="abha">أبها</option>
+                                        <option value="najran">نجران</option>
+                                        <option value="jazan">جازان</option>
+                                        <option value="hail">حائل</option>
+                                        <option value="other">{{ trans('common.elements.other') }}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="beneficiary-form__actions">
+                        <button type="button" class="btn btn--primary btn--next" data-next="2">
+                            {{ trans('pages.beneficiary.next') }}
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }} rtl:mr-2 ltr:ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {# Step 2: Family Information #}
+                <div class="beneficiary-form__step" data-step="2">
+                    <div class="beneficiary-form__card">
+                        <div class="beneficiary-form__card-header">
+                            <i class="sicon-house"></i>
+                            <h2>{{ trans('pages.beneficiary.step_family') }}</h2>
+                        </div>
+                        <div class="beneficiary-form__card-body">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.marital_status') }} <span class="text-red-500">*</span></label>
+                                    <select name="marital_status" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.select_placeholder') }}</option>
+                                        <option value="single">{{ trans('pages.beneficiary.single') }}</option>
+                                        <option value="married">{{ trans('pages.beneficiary.married') }}</option>
+                                        <option value="divorced">{{ trans('pages.beneficiary.divorced') }}</option>
+                                        <option value="widowed">{{ trans('pages.beneficiary.widowed') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.dependents_count') }} <span class="text-red-500">*</span></label>
+                                    <input type="number" name="dependents_count" class="form-input" required min="0" max="20"
+                                           placeholder="0">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.housing_type') }} <span class="text-red-500">*</span></label>
+                                    <select name="housing_type" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.select_placeholder') }}</option>
+                                        <option value="owned">{{ trans('pages.beneficiary.housing_owned') }}</option>
+                                        <option value="rented">{{ trans('pages.beneficiary.housing_rented') }}</option>
+                                        <option value="family">{{ trans('pages.beneficiary.housing_family') }}</option>
+                                        <option value="other">{{ trans('common.elements.other') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.monthly_income') }} <span class="text-red-500">*</span></label>
+                                    <select name="monthly_income" class="form-input" required>
+                                        <option value="">{{ trans('pages.beneficiary.select_placeholder') }}</option>
+                                        <option value="no_income">{{ trans('pages.beneficiary.income_none') }}</option>
+                                        <option value="below_3000">{{ trans('pages.beneficiary.income_below_3000') }}</option>
+                                        <option value="3000_6000">{{ trans('pages.beneficiary.income_3000_6000') }}</option>
+                                        <option value="above_6000">{{ trans('pages.beneficiary.income_above_6000') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group sm:col-span-2">
+                                    <label class="form-label">{{ trans('pages.beneficiary.address') }} <span class="text-red-500">*</span></label>
+                                    <textarea name="address" class="form-input" rows="2" required
+                                              placeholder="{{ trans('pages.beneficiary.address_placeholder') }}"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="beneficiary-form__actions">
+                        <button type="button" class="btn btn--outline btn--prev" data-prev="1">
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} rtl:ml-2 ltr:mr-2"></i>
+                            {{ trans('pages.beneficiary.prev') }}
+                        </button>
+                        <button type="button" class="btn btn--primary btn--next" data-next="3">
+                            {{ trans('pages.beneficiary.next') }}
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }} rtl:mr-2 ltr:ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {# Step 3: Aid Needs #}
+                <div class="beneficiary-form__step" data-step="3">
+                    <div class="beneficiary-form__card">
+                        <div class="beneficiary-form__card-header">
+                            <i class="sicon-hand-holding-heart"></i>
+                            <h2>{{ trans('pages.beneficiary.step_needs') }}</h2>
+                        </div>
+                        <div class="beneficiary-form__card-body">
+
+                            <p class="text-gray-500 mb-5">{{ trans('pages.beneficiary.needs_instructions') }}</p>
+
+                            <div class="beneficiary-aid-types">
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="food">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-food"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_food') }}</span>
+                                    </div>
+                                </label>
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="medical">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-medical-bag"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_medical') }}</span>
+                                    </div>
+                                </label>
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="educational">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-education"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_educational') }}</span>
+                                    </div>
+                                </label>
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="financial">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-money"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_financial') }}</span>
+                                    </div>
+                                </label>
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="housing">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-house"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_housing') }}</span>
+                                    </div>
+                                </label>
+                                <label class="beneficiary-aid-type">
+                                    <input type="checkbox" name="aid_types[]" value="clothing">
+                                    <div class="beneficiary-aid-type__card">
+                                        <i class="sicon-shirt"></i>
+                                        <span>{{ trans('pages.beneficiary.aid_clothing') }}</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-group mt-6">
+                                <label class="form-label">{{ trans('pages.beneficiary.needs_description') }}</label>
+                                <textarea name="needs_description" class="form-input" rows="4"
+                                          placeholder="{{ trans('pages.beneficiary.needs_description_placeholder') }}"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="beneficiary-form__actions">
+                        <button type="button" class="btn btn--outline btn--prev" data-prev="2">
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} rtl:ml-2 ltr:mr-2"></i>
+                            {{ trans('pages.beneficiary.prev') }}
+                        </button>
+                        <button type="button" class="btn btn--primary btn--next" data-next="4">
+                            {{ trans('pages.beneficiary.next') }}
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }} rtl:mr-2 ltr:ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {# Step 4: Documents & Submit #}
+                <div class="beneficiary-form__step" data-step="4">
+                    <div class="beneficiary-form__card">
+                        <div class="beneficiary-form__card-header">
+                            <i class="sicon-file-text"></i>
+                            <h2>{{ trans('pages.beneficiary.step_documents') }}</h2>
+                        </div>
+                        <div class="beneficiary-form__card-body">
+
+                            <p class="text-gray-500 mb-6">{{ trans('pages.beneficiary.documents_instructions') }}</p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.national_id_doc') }} <span class="text-red-500">*</span></label>
+                                    <salla-file-upload
+                                        instant-upload
+                                        required
+                                        name="documents[national_id]"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
+                                        payload-name="image"
+                                        height="120px"
+                                        accepted-file-types="image/png,image/jpeg,application/pdf"
+                                    >
+                                        <div class="profile-filepond-placholder">
+                                            <span class="profile-filepond-placholder-icon"><i class="sicon-id-card"></i></span>
+                                            <p class="profile-filepond-placholder-text">{{ trans('pages.beneficiary.upload_national_id') }}</p>
+                                        </div>
+                                    </salla-file-upload>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">{{ trans('pages.beneficiary.family_doc') }}</label>
+                                    <salla-file-upload
+                                        instant-upload
+                                        name="documents[family_doc]"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
+                                        payload-name="image"
+                                        height="120px"
+                                        accepted-file-types="image/png,image/jpeg,application/pdf"
+                                    >
+                                        <div class="profile-filepond-placholder">
+                                            <span class="profile-filepond-placholder-icon"><i class="sicon-file-text"></i></span>
+                                            <p class="profile-filepond-placholder-text">{{ trans('pages.beneficiary.upload_family_doc') }}</p>
+                                        </div>
+                                    </salla-file-upload>
+                                </div>
+
+                                <div class="form-group sm:col-span-2">
+                                    <label class="form-label">{{ trans('pages.beneficiary.other_docs') }}</label>
+                                    <salla-file-upload
+                                        instant-upload
+                                        allow-multiple
+                                        name="documents[other][]"
+                                        url="{{ store.url|trim('/'~user.language_code) }}/upload-image"
+                                        payload-name="image"
+                                        height="120px"
+                                        accepted-file-types="image/png,image/jpeg,application/pdf"
+                                    >
+                                        <div class="profile-filepond-placholder">
+                                            <span class="profile-filepond-placholder-icon"><i class="sicon-upload"></i></span>
+                                            <p class="profile-filepond-placholder-text">{{ trans('pages.beneficiary.upload_other_docs') }}</p>
+                                        </div>
+                                    </salla-file-upload>
+                                </div>
+
+                            </div>
+
+                            {# Consent #}
+                            <div class="beneficiary-consent mt-6">
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox" name="consent" id="consent-checkbox" required class="mt-1">
+                                    <span class="text-sm text-gray-600">
+                                        {{ trans('pages.beneficiary.consent_text', {'store_name': store.name}) }}
+                                    </span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="beneficiary-form__actions">
+                        <button type="button" class="btn btn--outline btn--prev" data-prev="3">
+                            <i class="sicon-arrow-{{ theme.is_rtl ? 'right' : 'left' }} rtl:ml-2 ltr:mr-2"></i>
+                            {{ trans('pages.beneficiary.prev') }}
+                        </button>
+                        <salla-button type="submit" loader-position="end" class="btn--submit-registration">
+                            <i class="sicon-check rtl:ml-2 ltr:mr-2"></i>
+                            {{ trans('pages.beneficiary.submit_registration') }}
+                        </salla-button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'beneficiary.js' | asset }}"></script>
+{% endblock %}
